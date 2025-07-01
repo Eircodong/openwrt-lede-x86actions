@@ -22,6 +22,7 @@ rm -rf feeds/packages/net/chinadns-ng
 rm -rf feeds/packages/net/geoview
 rm -rf feeds/packages/net/sing-box
 rm -rf feeds/packages/net/xray-core
+rm -rf feeds/packages/net/lucky
 
 # 设置默认主题
 sed -i 's/luci-theme-bootstrap/luci-theme-argon/g' feeds/luci/collections/luci-light/Makefile
