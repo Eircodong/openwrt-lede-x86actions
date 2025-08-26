@@ -23,8 +23,6 @@ rm -rf feeds/packages/net/geoview
 rm -rf feeds/packages/net/sing-box
 rm -rf feeds/packages/net/xray-core
 rm -rf feeds/packages/net/lucky
-rm -rf feeds/packages/utils/coremark/coremark.sh
-rm -rf feeds/packages/utils/coremark/coremark
 
 # 设置默认主题
 sed -i 's/luci-theme-bootstrap/luci-theme-argon/g' feeds/luci/collections/luci-light/Makefile
