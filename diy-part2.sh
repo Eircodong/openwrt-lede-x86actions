@@ -9,7 +9,8 @@
 # This is free software, licensed under the MIT License.
 # See /LICENSE for more information.
 #
-
+# 选择5.15内核
+sed -i 's/6.12/5.15/g' target/linux/x86/Makefile
 # 设置默认ip
 sed -i 's/192.168.1.1/192.168.100.1/g' package/base-files/luci2/bin/config_generate
 
