@@ -18,6 +18,7 @@ sed -i 's/192.168.1.1/192.168.100.1/g' package/base-files/luci2/bin/config_gener
 rm -rf feeds/luci/applications/luci-app-passwall
 rm -rf feeds/luci/applications/luci-app-passwall2
 rm -rf feeds/luci/applications/luci-app-openclash
+rm -rf feeds/luci/applications/luci-app-lucky
 rm -rf feeds/luci/themes/luci-theme-argon
 rm -rf feeds/packages/net/chinadns-ng
 rm -rf feeds/packages/net/geoview
