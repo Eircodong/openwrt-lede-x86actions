@@ -13,8 +13,7 @@ name: Build lede OpenWrt
 on:
   repository_dispatch:
   workflow_dispatch:
-  schedule:
-    - cron: 0 4 * * 5
+
 
 env:
   REPO_URL: https://github.com/coolsnowwolf/lede
@@ -30,7 +29,7 @@ env:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
            
     steps:
     
