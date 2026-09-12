@@ -15,14 +15,11 @@
 sed -i 's/192.168.1.1/192.168.100.1/g' package/base-files/files/bin/config_generate
 
 # 移除要替换的包
+rm -rf feeds/packages/net/{xray-core,v2ray-geodata,sing-box,chinadns-ng,dns2socks,hysteria,ipt2socks,microsocks,naiveproxy,shadowsocks-rust,shadowsocksr-libev,simple-obfs,tcping,v2ray-plugin,xray-plugin,geoview,shadow-tls}
+git clone https://github.com/Openwrt-Passwall/openwrt-passwall-packages package/passwall-packages
 rm -rf feeds/luci/applications/luci-app-passwall
-rm -rf feeds/luci/applications/luci-app-passwall2
 rm -rf feeds/luci/applications/luci-app-openclash
 rm -rf feeds/luci/applications/luci-app-lucky
-rm -rf feeds/packages/net/chinadns-ng
-rm -rf feeds/packages/net/geoview
-rm -rf feeds/packages/net/sing-box
-rm -rf feeds/packages/net/xray-core
 rm -rf feeds/packages/net/lucky
 rm -rf feeds/packages/utils/coremark
 
@@ -51,9 +48,8 @@ function git_sparse_clone() {
 git_sparse_clone openwrt-24.10 https://github.com/openwrt/packages utils/coremark
 git clone https://github.com/sirpdboy/luci-app-lucky.git package/lucky
 git clone --depth=1 -b master https://github.com/vernesong/OpenClash package/luci-app-openclash
-git clone --depth=1 https://github.com/xiaorouji/openwrt-passwall-packages package/openwrt-passwall
+git clone --depth=1 -b main https://github.com/xiaorouji/openwrt-passwall-packages package/openwrt-passwall
 git clone --depth=1 -b main https://github.com/Openwrt-Passwall/openwrt-passwall package/luci-app-passwall
-git clone --depth=1 -b main https://github.com/Openwrt-Passwall/openwrt-passwall2 package/openwrt-passwall2
 git clone https://github.com/sirpdboy/luci-app-taskplan package/luci-app-taskplan
 git clone https://github.com/miaoermua/luci-app-leigod-acc package/luci-app-leigod-acc
 
