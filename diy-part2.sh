@@ -57,3 +57,6 @@ git clone --depth=1 -b main https://github.com/linkease/nas-packages-luci packag
 git clone --depth=1 -b master https://github.com/linkease/nas-packages package/nas-packages
 git clone --depth=1 -b main https://github.com/linkease/istore package/istore
 
+# qosmate
+git clone --depth=1 -b main https://github.com/hudra0/qosmate package/qosmate
+git clone --depth=1 -b main https://github.com/hudra0/luci-app-qosmate package/luci-app-qosmate
