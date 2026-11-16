@@ -19,6 +19,9 @@ on:
 env:
   REPO_URL: https://github.com/coolsnowwolf/lede
   REPO_BRANCH: master
+  # 留空 = 跟随 master 滚动；填入 commit hash = 固定源码（推荐成功后 pin 住）
+  # 例：REPO_COMMIT: 6a6ea26
+  REPO_COMMIT: ''
   FEEDS_CONF: feeds.conf.default
   CONFIG_FILE: .config
   DIY_P1_SH: diy-part1.sh
@@ -28,9 +31,17 @@ env:
   UPLOAD_RELEASE: true
   TZ: Asia/Shanghai
 
+concurrency:
+  group: openwrt-build
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
 jobs:
   build:
     runs-on: ubuntu-22.04
+    timeout-minutes: 360
            
     steps:
     - name: Before freeing up disk space
@@ -118,6 +129,13 @@ jobs:
     - name: Clone source code
       run: |
         git clone --depth=1 $REPO_URL -b $REPO_BRANCH openwrt
+        # REPO_COMMIT 非空时固定到指定提交（防止上游滚动变化打挂构建）
+        if [ -n "$REPO_COMMIT" ]; then
+          cd openwrt
+          git fetch --depth=1 origin $REPO_COMMIT
+          git checkout -q FETCH_HEAD
+          git log -1 --format='pinned to: %h %s'
+        fi
 
     - name: Load custom feeds
       run: |
@@ -173,13 +191,13 @@ jobs:
 
     - name: Organize files
       id: organize
-      if: env.UPLOAD_FIRMWARE == 'true' && !cancelled()
+      if: steps.compile.outputs.status == 'success' && env.UPLOAD_FIRMWARE == 'true'
       run: |
         cd openwrt/bin/targets/*/*
         rm -rf packages
         echo "FIRMWARE=$PWD" >> $GITHUB_ENV
         echo "status=success" >> $GITHUB_OUTPUT
-        
+
     - name: Upload firmware directory
       uses: actions/upload-artifact@main
       if: steps.organize.outputs.status == 'success' && !cancelled()
@@ -189,11 +207,23 @@ jobs:
 
     - name: Generate release tag
       id: tag
-      if: env.UPLOAD_RELEASE == 'true' && !cancelled()
+      if: steps.compile.outputs.status == 'success' && env.UPLOAD_RELEASE == 'true'
       run: |
         echo "release_tag=$(date +"%Y.%m.%d-%H%M")" >> $GITHUB_OUTPUT
-        touch release.txt
-        [ ${UPLOAD_GOFILE} = true && ${{ steps.gofile.outputs.url }} ] && echo "🔗 [GoFile](${{ steps.gofile.outputs.url }})" >> release.txt
+        {
+          echo "## 构建信息"
+          echo "- 构建时间: $(date '+%Y-%m-%d %H:%M %Z')"
+          if [ -n "$REPO_COMMIT" ]; then
+            echo "- 源码: coolsnowwolf/lede (pin: $REPO_COMMIT)"
+          else
+            echo "- 源码: coolsnowwolf/lede master (滚动)"
+          fi
+          cd openwrt && echo "- LEDE commit: $(git log -1 --format='%h %s')" && cd ..
+          echo "- 内核: $(grep KERNEL_PATCHVER openwrt/target/linux/x86/Makefile | head -1 | awk '{print $NF}')"
+          echo
+          echo "## 校验和"
+          (cd "${{ env.FIRMWARE }}" && sha256sum *) || true
+        } > release.txt
         echo "status=success" >> $GITHUB_OUTPUT
 
     - name: Upload firmware to release
@@ -209,8 +239,8 @@ jobs:
     - name: Delete workflow runs
       uses: GitRML/delete-workflow-runs@main
       with:
-        retain_days: 1
-        keep_minimum_runs: 3
+        retain_days: 7
+        keep_minimum_runs: 5
 
     - name: Remove old Releases
       uses: dev-drprasad/delete-older-releases@v0.1.0
