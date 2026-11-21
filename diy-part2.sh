@@ -16,11 +16,6 @@ sed -i 's/192.168.1.1/192.168.100.1/g' package/base-files/files/bin/config_gener
 
 # 移除要替换的包
 rm -rf feeds/packages/utils/coremark
-rm -rf feeds/packages/net/{xray-core,v2ray-geodata,sing-box,chinadns-ng,dns2socks,hysteria,ipt2socks,microsocks,naiveproxy,shadowsocks-rust,shadowsocksr-libev,simple-obfs,tcping,v2ray-plugin,xray-plugin,geoview,shadow-tls}
-rm -rf feeds/luci/applications/luci-app-passwall
-rm -rf feeds/luci/applications/luci-app-openclash
-rm -rf feeds/luci/applications/luci-app-lucky
-rm -rf feeds/packages/net/lucky
 
 # 设置默认主题
 sed -i 's/luci-theme-bootstrap/luci-theme-argon/g' feeds/luci/collections/luci-light/Makefile
@@ -45,18 +40,11 @@ function git_sparse_clone() {
 
 # 添加插件
 git_sparse_clone openwrt-24.10 https://github.com/openwrt/packages utils/coremark
-git clone https://github.com/sirpdboy/luci-app-lucky.git package/lucky
-git clone --depth=1 -b master https://github.com/vernesong/OpenClash package/luci-app-openclash
-git clone --depth=1 -b main https://github.com/xiaorouji/openwrt-passwall-packages package/openwrt-passwall
-git clone --depth=1 -b main https://github.com/Openwrt-Passwall/openwrt-passwall package/luci-app-passwall
 git clone https://github.com/sirpdboy/luci-app-taskplan package/luci-app-taskplan
-git clone https://github.com/miaoermua/luci-app-leigod-acc package/luci-app-leigod-acc
+
 
 # istore
 git clone --depth=1 -b main https://github.com/linkease/nas-packages-luci package/nas-packages-luci
 git clone --depth=1 -b master https://github.com/linkease/nas-packages package/nas-packages
 git clone --depth=1 -b main https://github.com/linkease/istore package/istore
 
-# qosmate
-git clone --depth=1 -b main https://github.com/hudra0/qosmate package/qosmate
-git clone --depth=1 -b main https://github.com/hudra0/luci-app-qosmate package/luci-app-qosmate
