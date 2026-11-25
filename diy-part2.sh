@@ -48,5 +48,5 @@ git clone https://github.com/sirpdboy/luci-app-lucky.git package/lucky
 # istore
 git clone --depth=1 -b main https://github.com/linkease/nas-packages-luci package/nas-packages-luci
 git clone --depth=1 -b master https://github.com/linkease/nas-packages package/nas-packages
-git clone --depth=1 -b main https://github.com/linkease/istore package/istore
+git clone --depth=1 -b main https://github.com/Eircodong/istore package/istore
 
