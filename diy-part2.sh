@@ -16,6 +16,8 @@ sed -i 's/192.168.1.1/192.168.100.1/g' package/base-files/files/bin/config_gener
 
 # 移除要替换的包
 rm -rf feeds/packages/utils/coremark
+rm -rf feeds/luci/applications/luci-app-lucky
+rm -rf feeds/packages/net/lucky
 
 # 设置默认主题
 sed -i 's/luci-theme-bootstrap/luci-theme-argon/g' feeds/luci/collections/luci-light/Makefile
@@ -41,7 +43,7 @@ function git_sparse_clone() {
 # 添加插件
 git_sparse_clone openwrt-24.10 https://github.com/openwrt/packages utils/coremark
 git clone https://github.com/sirpdboy/luci-app-taskplan package/luci-app-taskplan
-
+git clone https://github.com/sirpdboy/luci-app-lucky.git package/lucky
 
 # istore
 git clone --depth=1 -b main https://github.com/linkease/nas-packages-luci package/nas-packages-luci
